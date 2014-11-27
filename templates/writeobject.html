@@ -16,7 +16,7 @@
 		</div>
 
 		<select ng-model="writeObjectData.objectType">
-		  <option ng-repeat="objectType in objectTypes" value="{{objectType.id}}">
+		  <option ng-repeat="objectType in objectTypes" ng-selected="{{objectType.id == writeObjectData.objectType}}" value="{{objectType.id}}">
 			{{objectType.title}}
 		  </option>
 		</select>
@@ -33,7 +33,7 @@
 		</div>
 
 		<select ng-model="writeObjectData.propertyIdentifier">
-		  <option ng-repeat="propertyIdentifier in propertyIdentifiers" value="{{propertyIdentifier.id}}">
+		  <option ng-repeat="propertyIdentifier in propertyIdentifiers" ng-selected="{{propertyIdentifier.id == writeObjectData.propertyIdentifier}}" value="{{propertyIdentifier.id}}">
 			{{propertyIdentifier.title}}
 		  </option>
 		</select>
@@ -50,7 +50,7 @@
 		</div>
 
 		<select ng-model="writeObjectData.priority">
-		  <option ng-repeat="priority in priorities" ng-selected="{{priority.id == 8}}" value="{{priority.id}}">
+		  <option ng-repeat="priority in priorities" ng-selected="{{priority.id == writeObjectData.priority}}" value="{{priority.id}}">
 			{{priority.title}}
 		  </option>
 		</select>

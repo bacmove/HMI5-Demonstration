@@ -16,7 +16,7 @@
 		</div>
 
 		<select ng-model="readObjectData.objectType">
-		  <option ng-repeat="objectType in objectTypes" value="{{objectType.id}}">
+		  <option ng-repeat="objectType in objectTypes" ng-selected="{{objectType.id == readObjectData.objectType}}" value="{{objectType.id}}">
 			{{objectType.title}}
 		  </option>
 		</select>
@@ -33,7 +33,7 @@
 		</div>
 
 		<select ng-model="readObjectData.propertyIdentifier">
-		  <option ng-repeat="propertyIdentifier in propertyIdentifiers" value="{{propertyIdentifier.id}}">
+		  <option ng-repeat="propertyIdentifier in propertyIdentifiers" ng-selected="{{propertyIdentifier.id == readObjectData.propertyIdentifier}}" value="{{propertyIdentifier.id}}">
 			{{propertyIdentifier.title}}
 		  </option>
 		</select>
