@@ -1,3 +1,7 @@
+/* 
+	HMI5 iOS Version 1.0
+*/ 
+
 if (typeof JSInterface === "undefined")
 {
 
@@ -51,6 +55,11 @@ if (typeof JSInterface === "undefined")
 		this.platformNotificationBeep = function()
 		{
 			_execute("platformNotificationBeep");
+		}
+		
+		this.platformIsWiFiConnected = function()
+		{
+			_execute("platformIsWiFiConnected");
 		}
 		
 		function _execute(function_name)

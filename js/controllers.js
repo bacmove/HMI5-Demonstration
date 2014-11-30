@@ -26,7 +26,7 @@ angular.module('starter.controllers', [])
     { title: 'Analog Value', id: 2 },
     { title: 'Binary Input', id: 3 },
     { title: 'Binary Output', id: 4 },
-    { title: 'Bainry Value', id: 5 }, 
+    { title: 'Binary Value', id: 5 }, 
     { title: 'Multi-State Input', id: 13 }, 
     { title: 'Multi-State Output', id: 14 }, 
     { title: 'Multi-State Value', id: 19 }
@@ -74,7 +74,7 @@ angular.module('starter.controllers', [])
     { title: 'Analog Value', id: 2 },
     { title: 'Binary Input', id: 3 },
     { title: 'Binary Output', id: 4 },
-    { title: 'Bainry Value', id: 5 }, 
+    { title: 'Binary Value', id: 5 }, 
     { title: 'Multi-State Input', id: 13 }, 
     { title: 'Multi-State Output', id: 14 }, 
     { title: 'Multi-State Value', id: 19 }
@@ -148,12 +148,20 @@ angular.module('starter.controllers', [])
 		JSInterface.platformNotificationAlert("title", "message", "OK", true, "info");
   };
   
+  $scope.platformNotificationConfirm = function() {
+		JSInterface.platformNotificationConfirm("title", "message", "Yes", "No", true, "info");
+  };
+  
   $scope.platformNotificationVibrate = function() {
 		JSInterface.platformNotificationVibrate(250);
   };
   
   $scope.platformNotificationBeep = function() {
 		JSInterface.platformNotificationBeep();
+  };
+  
+  $scope.platformIsWiFiConnected = function() {
+		JSInterface.platformIsWiFiConnected();
   };
   
 });
