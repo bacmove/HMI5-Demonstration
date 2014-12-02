@@ -71,5 +71,152 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
+})
+
+.factory("hmi5helper", function ($rootScope, $interval) 
+{
+    var deviceID = 0;
+    var timer = null;
+	
+    var hmi5helperService = {};
+	
+	function _initialize()
+	{
+		deviceID = parseInt(hmi5helperService.loadJSONObject('hmi5demo2.deviceID'), 10);
+	}
+	
+	hmi5helperService.setDeviceID = function(new_deviceID)
+	{
+		deviceID = parseInt(new_deviceID, 10);
+	}
+	
+	hmi5helperService.getReadObjectData = function()
+	{
+		var data = hmi5helperService.loadJSONObject('hmi5demo2.readObjectData');
+		
+		if (data !== null)
+		{
+			return data;
+		}
+		else
+		{
+			return {deviceID: 10103, 
+					objectType: 2, 
+					objectInstance: 0, 
+					propertyIdentifier: 85, 
+					arrayIndex:-1, 
+					value: ''};
+		}
+	}
+	
+	hmi5helperService.saveReadObjectData = function(readObjectData)
+	{
+		hmi5helperService.saveJSONObject('hmi5demo2.readObjectData', readObjectData);
+	}
+	
+	hmi5helperService.getWriteObjectData = function()
+	{
+		var data = hmi5helperService.loadJSONObject('hmi5demo2.writeObjectData');
+		
+		if (data !== null)
+		{
+			return data;
+		}
+		else
+		{
+			return {deviceID: 10103, 
+					objectType: 2, 
+					objectInstance: 0, 
+					propertyIdentifier: 85, 
+					arrayIndex:-1, 
+					priority: 8, 
+					value: 0, 
+					isNullValue: false, 
+					message: ''};
+		}
+	}
+	
+	hmi5helperService.saveWriteObjectData = function(writeObjectData)
+	{
+		hmi5helperService.saveJSONObject('hmi5demo2.writeObjectData', writeObjectData);
+	}
+	
+    hmi5helperService.startWhoIsTimer = function() 
+	{
+		if (timer === null)
+		{
+			JSInterface.whoIs(deviceID, deviceID);
+			
+			timer = $interval(function() {
+				JSInterface.whoIs(deviceID, deviceID);
+			}, 10000);
+		}
+    };
+	
+    hmi5helperService.stopWhoIsTimer = function() 
+	{
+        if (timer !== null)
+		{
+			$interval.cancel(timer);
+			timer = null;
+        }
+    };
+	
+	hmi5helperService.saveJSONObject = function(name, data) 
+	{
+		var ret = false;
+		
+		if (window.localStorage) 
+		{
+			// Store an object using JSON
+			var data_str;
+			
+			data_str = JSON.stringify(data);
+			localStorage.setItem(name, data_str);
+			
+			console.log('save; ' + name + '=' + data_str);
+			
+			ret = true;
+		}
+		else
+		{
+			console.log("Cannot save, localStorage not supported.");
+		}
+		
+		return ret;
+	}
+	
+	hmi5helperService.loadJSONObject = function(name)
+	{
+		var data = false;
+		var data_str;
+		
+		if (window.localStorage) 
+		{
+			data_str = localStorage.getItem(name);
+			
+			data = JSON.parse(data_str);
+			
+			try
+			{
+				data = JSON.parse(data);
+			}
+			catch (e)
+			{
+			}
+			
+			console.log('load; ' + name + '=' + data_str);
+		}
+		else
+		{
+			console.log("Cannot load, localStorage not supported.");
+		}
+		
+		return data;
+	}
+	
+	_initialize();
+
+    return hmi5helperService;
 });
 

@@ -4,7 +4,6 @@
 
 if (typeof JSInterface === "undefined")
 {
-
 	var JSInterface = new function()
 	{
 		this.whoIs = function(minimum, maximum)

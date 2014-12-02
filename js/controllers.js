@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ReadObjectCtrl', function($scope) {
+.controller('ReadObjectCtrl', ['$scope','hmi5helper', function ($scope, hmi5helper) {
   $scope.objectTypes = [
     { title: 'Analog Input', id: 0 },
     { title: 'Analog Output', id: 1 },
@@ -37,14 +37,15 @@ angular.module('starter.controllers', [])
   ];
   
   // Form data for the login modal
-  $scope.readObjectData = {deviceID: 10103, 
-							objectType: 2, 
-							objectInstance: 0, 
-							propertyIdentifier: 85, 
-							arrayIndex:-1, 
-							value: ''};
+  $scope.readObjectData = hmi5helper.getReadObjectData();
   
+	$scope.$on('$viewContentLoaded', function() {
+		_initialize();
+	});
+
   $scope.changeDeviceID = function() {
+		_normalize();
+		
 		JSInterface.whoIs($scope.readObjectData.deviceID, $scope.readObjectData.deviceID);
   };
 
@@ -52,22 +53,42 @@ angular.module('starter.controllers', [])
   $scope.readObject = function() {
 		try 
 		{
-			JSInterface.whoIs($scope.readObjectData.deviceID, $scope.readObjectData.deviceID);
+			_normalize();
 			
 			JSInterface.readDeviceObjectProperty($scope.readObjectData.deviceID, 
 													$scope.readObjectData.objectType, 
 													$scope.readObjectData.objectInstance, 
 													$scope.readObjectData.propertyIdentifier, 
 													/*$scope.readObjectData.arrayIndex*/-1);
+													
+			hmi5helper.saveReadObjectData($scope.readObjectData);
 		}
 		catch (e)
 		{
 			alert(e);
 		}
   };
-})
+  
+  function _initialize() 
+  {
+		_normalize();
+		hmi5helper.startWhoIsTimer();
+  }
+  
+  function _normalize()
+  {
+		$scope.readObjectData.deviceID = parseInt($scope.readObjectData.deviceID, 10);
+		$scope.readObjectData.objectType = parseInt($scope.readObjectData.objectType, 10);
+		$scope.readObjectData.objectInstance = parseInt($scope.readObjectData.objectInstance, 10);
+		$scope.readObjectData.propertyIdentifier = parseInt($scope.readObjectData.propertyIdentifier, 10);
+		$scope.readObjectData.arrayIndex = parseInt($scope.readObjectData.arrayIndex, 10);
+		
+		hmi5helper.setDeviceID($scope.readObjectData.deviceID);
+  }
+  
+}])
 
-.controller('WriteObjectCtrl', function($scope) {
+.controller('WriteObjectCtrl', ['$scope','hmi5helper', function ($scope, hmi5helper) {
   $scope.objectTypes = [
     { title: 'Analog Input', id: 0 },
     { title: 'Analog Output', id: 1 },
@@ -104,17 +125,15 @@ angular.module('starter.controllers', [])
   ];
   
   // Form data for the login modal
-  $scope.writeObjectData = {deviceID: 10103, 
-							objectType: 2, 
-							objectInstance: 0, 
-							propertyIdentifier: 85, 
-							arrayIndex:-1, 
-							priority: 8, 
-							value: 0, 
-							isNullValue: false, 
-							message: ''};
+  $scope.writeObjectData = hmi5helper.getWriteObjectData();
   
+	$scope.$on('$viewContentLoaded', function() {
+		_initialize();
+	});
+
   $scope.changeDeviceID = function() {
+		_normalize();
+		
 		JSInterface.whoIs($scope.writeObjectData.deviceID, $scope.writeObjectData.deviceID);
   };
 
@@ -124,7 +143,7 @@ angular.module('starter.controllers', [])
 		{
 			// $scope.writeObjectData.message = '';
 			
-			JSInterface.whoIs($scope.writeObjectData.deviceID, $scope.writeObjectData.deviceID);
+			_normalize();
 			
 			JSInterface.writeDeviceObjectProperty($scope.writeObjectData.deviceID, 
 													$scope.writeObjectData.objectType, 
@@ -134,13 +153,40 @@ angular.module('starter.controllers', [])
 													$scope.writeObjectData.priority, 
 													$scope.writeObjectData.value, 
 													$scope.writeObjectData.isNullValue);
+						
+			hmi5helper.saveWriteObjectData($scope.writeObjectData);
 		}
 		catch (e)
 		{
 			alert(e);
 		}
   };
-})
+  
+  function _initialize() 
+  {
+		_normalize();
+		hmi5helper.startWhoIsTimer();
+  }
+  
+  function _normalize()
+  {
+		$scope.writeObjectData.deviceID = parseInt($scope.writeObjectData.deviceID, 10);
+		$scope.writeObjectData.objectType = parseInt($scope.writeObjectData.objectType, 10);
+		$scope.writeObjectData.objectInstance = parseInt($scope.writeObjectData.objectInstance, 10);
+		$scope.writeObjectData.propertyIdentifier = parseInt($scope.writeObjectData.propertyIdentifier, 10);
+		$scope.writeObjectData.arrayIndex = parseInt($scope.writeObjectData.arrayIndex, 10);
+		$scope.writeObjectData.priority = parseInt($scope.writeObjectData.priority, 10);
+		$scope.writeObjectData.value = parseInt($scope.writeObjectData.value, 10);
+			
+		if (typeof $scope.writeObjectData.isNullValue === 'string')
+		{
+			$scope.writeObjectData.isNullValue = ($scope.writeObjectData.isNullValue === 'true');
+		}
+		
+		hmi5helper.setDeviceID($scope.writeObjectData.deviceID);
+  }
+	
+}])
 
 .controller('PlatformCtrl', function($scope) {
   

@@ -1,8 +1,8 @@
 JSInterface.updateDevice = function(deviceID, deviceName, segmentation,
     vendorID, modelName) {
     try {
-        JSInterface.platformNotificationAlert("updateDevice", (deviceID +
-                deviceName + segmentation + vendorID + modelName), "OK",
+        JSInterface.platformNotificationAlert("updateDevice", (deviceID + " " + 
+                deviceName + " " + segmentation + " " + vendorID + " " + modelName), "OK",
             true, "info");
     } catch (e) {
         JSInterface.platformNotificationAlert("Error updateDevice", e, "OK",
@@ -68,25 +68,25 @@ JSInterface.writeDeviceObjectPropertyError = function(deviceID, objectType,
 }
 
 JSInterface.platformNotificationConfirmPositive = function() {
-    try {
+    /*try {
         JSInterface.platformNotificationAlert("Positive button",
             "Positive button pressed.", "OK", true, "info");
     } catch (e) {
         JSInterface.platformNotificationAlert(
             "Error platformNotificationConfirmPositive", e, "OK", true,
             "error");
-    }
+    }*/
 }
 
 JSInterface.platformNotificationConfirmNegative = function() {
-    try {
+    /*try {
         JSInterface.platformNotificationAlert("Negative button",
             "Negative button pressed.", "OK", true, "info");
     } catch (e) {
         JSInterface.platformNotificationAlert(
             "Error platformNotificationConfirmNegative", e, "OK", true,
             "error");
-    }
+    }*/
 }
 
 /*
